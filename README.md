@@ -1,1 +1,1 @@
-# azuredevops-templates
+# azuredevopstemplates
