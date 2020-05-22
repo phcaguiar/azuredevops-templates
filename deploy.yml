@@ -1,6 +1,6 @@
 parameters:
   - name: 'vmImage'
-    # default: 'ubuntu-18.04'
+    default: 'ubuntu-18.04'
     type: string
 
 jobs:
