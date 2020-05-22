@@ -1,35 +1,32 @@
-stages:
-- stage: Deploy
-  displayName: Deploy
-  jobs:
-    - job: Deploy
-      displayName: "BuiDeployld"
-      pool:
-        vmImage: 'ubuntu-latest'
-      workspace:
-        clean: all
-      steps:
-      - download: current
-        artifact: build
-      - bash: |
-          chmod +x .terraform/plugins/linux_amd64/terraform-provider*
-        workingDirectory: $(Pipeline.Workspace)/build
-        displayName: 'Set Terraform Provider File Permissions'
-      - bash: |
-          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-          export PATH="$HOME/.tfenv/bin:$PATH"
-          tfenv install
-        workingDirectory: '$(Pipeline.Workspace)/build'
-        displayName: 'Sets terraform version to the specified on .terraform-version file'
-      - bash: |
-          export PATH="$HOME/.tfenv/bin:$PATH"
-          terraform init
-        workingDirectory: '$(Pipeline.Workspace)/build'
-        displayName: 'Terraform Init'
-        env:
-          ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
-      - bash: |
-          export PATH="$HOME/.tfenv/bin:$PATH"
-          terraform apply --auto-approve
-        workingDirectory: '$(Pipeline.Workspace)/build'
-        displayName: 'Terraform Apply'
+jobs:
+  - job: Deploy
+    displayName: "BuiDeployld"
+    pool:
+      vmImage: 'ubuntu-latest'
+    workspace:
+      clean: all
+    steps:
+    - download: current
+      artifact: build
+    - bash: |
+        chmod +x .terraform/plugins/linux_amd64/terraform-provider*
+      workingDirectory: $(Pipeline.Workspace)/build
+      displayName: 'Set Terraform Provider File Permissions'
+    - bash: |
+        git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+        export PATH="$HOME/.tfenv/bin:$PATH"
+        tfenv install
+      workingDirectory: '$(Pipeline.Workspace)/build'
+      displayName: 'Sets terraform version to the specified on .terraform-version file'
+    - bash: |
+        export PATH="$HOME/.tfenv/bin:$PATH"
+        terraform init
+      workingDirectory: '$(Pipeline.Workspace)/build'
+      displayName: 'Terraform Init'
+      env:
+        ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
+    - bash: |
+        export PATH="$HOME/.tfenv/bin:$PATH"
+        terraform apply --auto-approve
+      workingDirectory: '$(Pipeline.Workspace)/build'
+      displayName: 'Terraform Apply'
