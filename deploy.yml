@@ -1,8 +1,13 @@
+parameters:
+  - name: 'vmImage'
+    # default: 'ubuntu-18.04'
+    type: string
+
 jobs:
   - job: Deploy
     displayName: "BuiDeployld"
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: ${{ parameters.vmImage }}
     workspace:
       clean: all
     steps:
